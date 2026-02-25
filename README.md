@@ -84,3 +84,6 @@ Existing file replace avuthundi
 Browser lo refresh cheyyi
 
 Deploy automatic ga avuthundi.
+
+
+note : if u getting any error make sure file must be "public acl enable" make enable
