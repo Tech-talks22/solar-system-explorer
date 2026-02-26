@@ -219,5 +219,12 @@ http://your-public-ip
 
 Website live 🚀
 
+chmod 777 /var/run/docker.sock --> docker run permision deamon permistion 
+
+docker ps
+
+
+
+
 
 
