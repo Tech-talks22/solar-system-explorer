@@ -86,4 +86,138 @@ Browser lo refresh cheyyi
 Deploy automatic ga avuthundi.
 
 
-note : if u getting any error make sure file must be "public acl enable" make enable
+note : if u getting any error make sure file must be "public acl enable" make enable  
+
+
+
+
+
+
+
+
+#DevOps Deployment Flow (CI/CD Pipeline)
+
+Developer → GitHub → Jenkins → Docker Build → EC2 Deploy
+
+👉 GitHub
+👉 Jenkins
+👉 Docker
+👉 Amazon Web Services (EC2)
+
+🔹 STEP 1: EC2 Instance Create Cheyyi
+
+Amazon Linux 2
+Ports allow:
+22 (SSH)
+8080 (Jenkins)
+80 (Website)
+🔹 STEP 2: git installastion 
+
+sudo yum update -y
+sudo yum install git -y
+git --version
+#git clone https://github.com/username/solar-system-explorer.git
+
+🔹 STEP 3: Jenkins Install Cheyyi
+
+EC2 lo SSH login ayi:
+
+sudo yum update -y
+sudo yum install java-17-amazon-corretto -y
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum install jenkins -y
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+
+Browser lo open:
+http://your-public-ip:8080
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+Unlock Jenkins → setup complete cheyyi.
+
+🔹 STEP 4: Docker Install Cheyyi
+sudo yum install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker ec2-user
+
+Logout → Login again
+
+🔹 STEP 5: Dockerfile Create Cheyyi (Project lo)
+
+Nee HTML project folder lo Dockerfile create cheyyi:
+
+FROM nginx:latest
+COPY . /usr/share/nginx/html
+
+STEP 6: Jenkins Pipeline Create Cheyyi
+
+Jenkins → New Item → Pipeline
+
+Pipeline script:
+
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone Code') {
+            steps {
+                git 'https://github.com/your-username/solar-system-explorer.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t solar-app .'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh '''
+                docker stop solar-container || true
+                docker rm solar-container || true
+                docker run -d -p 80:80 --name solar-container solar-app
+                '''
+            }
+        }
+    }
+}
+
+Save → Build Now click cheyyi.
+
+PHASE : Jenkins Pipeline Setup
+✅ Step 8: Install Required Plugins
+
+Jenkins → Manage Jenkins → Plugins
+
+Install:
+
+Git plugin
+
+Docker Pipeline plugin
+
+Restart Jenkins.
+✅ Step 9: Create Pipeline Job
+
+Jenkins → New Item → Pipeline → Name: solar-project
+
+step 10: go to pipeline syntax ( snippet genereter --> steps 
+
+1) simple step --> git
+2) Reposotiry url -->
+3) Brand name : EX: main
+4) Genarete pipeline script --> then you wil get a git url copy and paste in pipeline script (inside the step 6 jenkins script )
+
+   🎉 Deployment Done
+
+Browser lo open cheyyi:
+
+http://your-public-ip
+
+Website live 🚀
+
+
+
